@@ -10,7 +10,8 @@ pygame.display.set_caption("Space Sim")
 
 ORANGE = (255, 200, 0)
 AQUA = (0, 100, 255)
-WHITE = (255, 255, 255)
+RED = (255, 100, 100)
+GREEN = (100, 255, 100)
 
 
 class CelestialObject:
@@ -35,23 +36,23 @@ class CelestialObject:
         self.accelY += forceY / self.mass
 
     def simulate(self):
-        print(self.accelX, self.accelY)
-        self.position.x += self.accelX / 10
-        self.position.y += self.accelY / 10
+        self.position.x += self.accelX
+        self.position.y += self.accelY
 
 
 celestialObjects = [
-    #star = CelestialObject(50, 10_000_000_000_000_000, 900, 500, 0, 0)
-    #planet = CelestialObject(20, 1_000_000_000_000_000, 1200, 500, 0, -50_000_000_000_000_000)
-    CelestialObject(ORANGE, 50, 250_000_000_000_000_000, 0, 0, 0, 0),
-    CelestialObject(AQUA, 20, 1_000_000_000_000_000, 600,
-                    0, 0, 540_000_000_000_000_000),
-    CelestialObject(WHITE, 10, 7_000_000_000_000,
-                    700, 0, 0, 3_000_000_000_000_000)
+    CelestialObject(ORANGE, 100, 1_000_000_000_000_000, 0, 0, 0, 0),
+    CelestialObject(AQUA, 30, 6_000_000_000, 1000, 0, 0, 50_000_000_000),
+    CelestialObject(RED, 15, 4_000_000_000, 2000, 0, 0, 20_000_000_000),
+    CelestialObject(GREEN, 20, 4_500_000_000, 1500, 0, 0, 30_000_000_000)
+    
+    #CelestialObject(ORANGE, 50, 250_000_000_000_000_000, 0, 0, 0, 0),
+    #CelestialObject(AQUA, 20, 1_000_000_000_000_000, 600, 0, 0, 200_000_000_000_000_000)
 ]
 
+inverseScaleFactor = 4
 
-relativeCelestialObject = celestialObjects[1]
+relativeCelestialObject = celestialObjects[0]
 
 cameraPos = pygame.Vector2(0, 0)
 centre = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
@@ -97,8 +98,8 @@ while running:
     screen.fill((0, 0, 0))
 
     for i in celestialObjects:
-        pygame.draw.circle(screen, i.colour, i.position -
-                           cameraPos + centre, i.radius)
+        pygame.draw.circle(screen, i.colour, ((i.position.x -
+                           cameraPos.x) / inverseScaleFactor + centre.x, (i.position.y - cameraPos.y) / inverseScaleFactor + centre.y), i.radius / inverseScaleFactor)
     """
     pygame.draw.circle(screen, (255, 0, 0),
                        star.position - cameraPos + centre, star.radius)
